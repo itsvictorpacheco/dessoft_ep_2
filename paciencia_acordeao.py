@@ -42,14 +42,17 @@ def possui_movimentos_possiveis(baralho):# Retorna se existem movimentos possív
         return True
     else:
         return False
-enter = input('Pressione enter para iniciar o jogo: ')
-while enter == '' or enter == 's':
-    baralho = cria_baralho()
+def printar_baralho(baralho): #printa baralho com numero antes daas cartas *FALTA CORES*
     c = 0
-    #pensar numa função para imprimir o baralho, com numeros, colorido etc
     while c < len(baralho):
         print('{}. {}'. format(c + 1, baralho[c]))
         c += 1
+    return ''
+#PENSAR NA IMPLEMENTAÇÃO DE DICA
+enter = input('Pressione enter para iniciar o jogo: ')
+while enter == '' or enter == 's':
+    baralho = cria_baralho()
+    printar_baralho(baralho)
     while possui_movimentos_possiveis(baralho) == True:
         i = int(input('Escolha uma carta (Digite um número entre 1 e {}): '.format(len(baralho)))) - 1
         if lista_movimentos_possiveis(baralho, i) == [1, 3]:
@@ -58,20 +61,22 @@ while enter == '' or enter == 's':
             escolha = int(input('Em qual das cartas você quer empilhar? '))
             if escolha == 1:
                 baralho = empilha(baralho, i, i - 1)
-            else:
+            elif escolha == 2:
                 baralho = empilha(baralho, i, i - 3)
-            print(baralho)
+            printar_baralho(baralho)
         elif lista_movimentos_possiveis(baralho, i) == [1]:
             baralho = empilha(baralho, i, i - 1)
-            print(baralho)
+            printar_baralho(baralho)
         elif lista_movimentos_possiveis(baralho, i) == [3]:
             baralho = empilha(baralho, i, i - 3)
-            print(baralho)
+            printar_baralho(baralho)
         else:
             print('A carta {} não tem nenhuma jogada possível'.format(baralho[i]))
     if len(baralho) == 1:
         print('Parabéns, você ganhou!')
     else:
+        print('')
         print('Não foi dessa vez! ;-;')
+        print('')
     enter = input('Quer jogar novamente? (s/n): ')
-print('obrigado por jogar')
+print('Obrigado por jogar')
