@@ -1,16 +1,17 @@
 import random
 # Gerar baralho
 def cria_baralho():
-    espadas = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    copas = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    ouros = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    paus = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
+    coringa = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
+    espadas = []
+    copas = []
+    ouros = []
+    paus = []
     i = 0
-    while i < 13:
-        espadas[i] = espadas[i] + '♠'
-        copas[i] = copas[i] + '♥'
-        ouros[i] = ouros[i] + '♦'
-        paus[i] = paus[i] + '♣'
+    while i < len(coringa):
+        espadas.append('\033[0;34m{}{}\033[m'.format(coringa[i],'♠'))
+        copas.append('\033[0;31m{}{}\033[m'.format(coringa[i],'♥'))
+        ouros.append('\033[0;35m{}{}\033[m'.format(coringa[i],'♦'))
+        paus.append('\033[0;37m{}{}\033[m'.format(coringa[i],'♣'))
         i += 1
     baralho =  espadas + copas + ouros + paus
     random.shuffle(baralho)

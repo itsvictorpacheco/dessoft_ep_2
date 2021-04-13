@@ -1,15 +1,16 @@
 import random
-def cria_baralho(): # Gerar baralho
-    espadas = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    copas = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    ouros = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
-    paus = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
+def cria_baralho(): # Gerar baralho com cores
+    coringa = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Q', 'J', 'K']
+    espadas = []
+    copas = []
+    ouros = []
+    paus = []
     i = 0
-    while i < 13:
-        espadas[i] = espadas[i] + '♠'
-        copas[i] = copas[i] + '♥'
-        ouros[i] = ouros[i] + '♦'
-        paus[i] = paus[i] + '♣'
+    while i < len(coringa):
+        espadas.append('\033[0;34m{}{}\033[m'.format(coringa[i],'♠'))
+        copas.append('\033[0;31m{}{}\033[m'.format(coringa[i],'♥'))
+        ouros.append('\033[0;35m{}{}\033[m'.format(coringa[i],'♦'))
+        paus.append('\033[0;37m{}{}\033[m'.format(coringa[i],'♣'))
         i += 1
     baralho =  espadas + copas + ouros + paus
     random.shuffle(baralho)
@@ -50,6 +51,7 @@ def printar_baralho(baralho): #printa baralho com numero antes daas cartas *FALT
     return ''
 #PENSAR NA IMPLEMENTAÇÃO DE DICA
 # ADICIONAR COMENTÁRIOS DE EXPLICAÇÃO
+
 enter = input('Pressione enter para iniciar o jogo: ')
 while enter == '' or enter == 's':
     baralho = cria_baralho()
