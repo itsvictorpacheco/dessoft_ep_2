@@ -7,10 +7,10 @@ def cria_baralho(): # Gerar baralho com cores
     paus = []
     i = 0
     while i < len(coringa):
-        espadas.append('\033[0;34m{}{}\033[m'.format(coringa[i],'♠'))
-        copas.append('\033[0;31m{}{}\033[m'.format(coringa[i],'♥'))
-        ouros.append('\033[0;35m{}{}\033[m'.format(coringa[i],'♦'))
-        paus.append('\033[0;37m{}{}\033[m'.format(coringa[i],'♣'))
+        espadas.append('{}{}'.format(coringa[i],'♠'))
+        copas.append('{}{}'.format(coringa[i],'♥'))
+        ouros.append('{}{}'.format(coringa[i],'♦'))
+        paus.append('{}{}'.format(coringa[i],'♣'))
         i += 1
     baralho =  espadas + copas + ouros + paus
     random.shuffle(baralho)
@@ -44,34 +44,32 @@ def possui_movimentos_possiveis(baralho):# Retorna se existem movimentos possív
     else:
         return False
 def printar_baralho(baralho): #printa baralho com numero antes daas cartas *FALTA CORES*
-    c = 0
-    while c < len(baralho):
-        print('{}. {}'. format(c + 1, baralho[c]))
-        c += 1
+    j = 0
+    while j < len(baralho):
+        if baralho[j][-1] == '♠':
+            print(j + 1, '\033[0;34m{}\033[m'.format(baralho[j]))
+        elif baralho[j][-1] == '♥':
+            print(j + 1, '\033[0;31m{}\033[m'.format(baralho[j]))
+        elif baralho[j][-1] == '♦':
+            print(j + 1,'\033[0;35m{}\033[m'.format(baralho[j]))
+        elif baralho[j][-1] == '♣':
+            print(j + 1, '\033[0;37m{}\033[m'.format(baralho[j]))
+        j += 1
     return ''
 
-#PRINTAR REGRAS NO INICIO
+# PENSAR NA IMPLEMENTAÇÃO DE DICA
+# ADICIONAR COMENTÁRIOS DE EXPLICAÇÃO
 
-enter = input('Pressione enter para iniciar o jogo: ') #Iniciar o jogo
-while enter == '' or enter == 's': #loop para o jogador poder recomeçar o jogo sem reiniciar o programa
+enter = input('Pressione enter para iniciar o jogo: ')
+while enter == '' or enter == 's':
     baralho = cria_baralho()
     printar_baralho(baralho)
-    while possui_movimentos_possiveis(baralho) == True: #Loop para o jogo funcionar enquanto o jogador não perdeu
-        i = input('Escolha uma carta (Digite um número entre 1 e {}) ou digite "dica" para ser ajudado: '.format(len(baralho)))
-        if i == 'dica': #Se a pessoa quiser uma dica de carta a sr usada
-            x = 0
-            dica = []
-            while x < len(baralho):
-                if possui_movimentos_possiveis(baralho[x]) == True:
-                    dica.append(baralho[x])
-                x += 1
-            random.shuffle(dica)
-            print('{}.{}'.format(baralho.index(dica[0]) + 1, dica[0]))
-        elif int(i) > len(baralho): #Se i for um número fora do baralho
+    while possui_movimentos_possiveis(baralho) == True:
+        i = int(input('Escolha uma carta (Digite um número entre 1 e {}): '.format(len(baralho)))) - 1
+        if i > len(baralho):
             print('Insira um valor válido')
         else:
-            i = int(i) - 1
-            if lista_movimentos_possiveis(baralho, i) == [1, 3]: #Se o jogador tiver duas jogadas possíveis
+            if lista_movimentos_possiveis(baralho, i) == [1, 3]:
                 print('1. {}'.format(baralho[i - 1]))
                 print('2. {}'.format(baralho[i - 3]))
                 escolha = int(input('Em qual das cartas você quer empilhar? '))
@@ -86,11 +84,20 @@ while enter == '' or enter == 's': #loop para o jogador poder recomeçar o jogo 
             elif lista_movimentos_possiveis(baralho, i) == [3]:
                 baralho = empilha(baralho, i, i - 3)
                 printar_baralho(baralho)
-            else: #Se a carta não puder ser empilhada de acordo com as regras do jogo
-                print('A carta {} não tem nenhuma jogada possível'.format(baralho[i]))
-    if len(baralho) == 1: #Se só restou um monte ao final do jogo
-        print('\nParabéns, você ganhou! :)\n')
+            else:
+                if baralho[i][-1] == '♠':
+                    print('A carta', '\033[0;34m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
+                elif baralho[i][-1] == '♥':
+                    print('A carta', '\033[0;31m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
+                elif baralho[i][-1] == '♦':
+                    print('A carta', '\033[0;35m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
+                elif baralho[i][-1] == '♣':
+                    print('A carta', '\033[0;37m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível') 
+    if len(baralho) == 1:
+        print('Parabéns, você ganhou! :)')
     else:
-        print('\nNão foi dessa vez! :(\n')
+        print('')
+        print('Não foi dessa vez! :(')
+        print('')
     enter = input('Quer jogar novamente? (digite s ou n): ')
 print('Obrigado por jogar')
