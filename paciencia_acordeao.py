@@ -49,19 +49,29 @@ def printar_baralho(baralho): #printa baralho com numero antes daas cartas *FALT
         print('{}. {}'. format(c + 1, baralho[c]))
         c += 1
     return ''
-#PENSAR NA IMPLEMENTAÇÃO DE DICA
-# ADICIONAR COMENTÁRIOS DE EXPLICAÇÃO
 
-enter = input('Pressione enter para iniciar o jogo: ')
-while enter == '' or enter == 's':
+#PRINTAR REGRAS NO INICIO
+
+enter = input('Pressione enter para iniciar o jogo: ') #Iniciar o jogo
+while enter == '' or enter == 's': #loop para o jogador poder recomeçar o jogo sem reiniciar o programa
     baralho = cria_baralho()
     printar_baralho(baralho)
-    while possui_movimentos_possiveis(baralho) == True:
-        i = int(input('Escolha uma carta (Digite um número entre 1 e {}): '.format(len(baralho)))) - 1
-        if i > len(baralho):
+    while possui_movimentos_possiveis(baralho) == True: #Loop para o jogo funcionar enquanto o jogador não perdeu
+        i = input('Escolha uma carta (Digite um número entre 1 e {}) ou digite "dica" para ser ajudado: '.format(len(baralho)))
+        if i == 'dica': #Se a pessoa quiser uma dica de carta a sr usada
+            x = 0
+            dica = []
+            while x < len(baralho):
+                if possui_movimentos_possiveis(baralho[x]) == True:
+                    dica.append(baralho[x])
+                x += 1
+            random.shuffle(dica)
+            print('{}.{}'.format(baralho.index(dica[0]) + 1, dica[0]))
+        elif int(i) > len(baralho): #Se i for um número fora do baralho
             print('Insira um valor válido')
         else:
-            if lista_movimentos_possiveis(baralho, i) == [1, 3]:
+            i = int(i) - 1
+            if lista_movimentos_possiveis(baralho, i) == [1, 3]: #Se o jogador tiver duas jogadas possíveis
                 print('1. {}'.format(baralho[i - 1]))
                 print('2. {}'.format(baralho[i - 3]))
                 escolha = int(input('Em qual das cartas você quer empilhar? '))
@@ -76,13 +86,11 @@ while enter == '' or enter == 's':
             elif lista_movimentos_possiveis(baralho, i) == [3]:
                 baralho = empilha(baralho, i, i - 3)
                 printar_baralho(baralho)
-            else:
+            else: #Se a carta não puder ser empilhada de acordo com as regras do jogo
                 print('A carta {} não tem nenhuma jogada possível'.format(baralho[i]))
-    if len(baralho) == 1:
-        print('Parabéns, você ganhou! :)')
+    if len(baralho) == 1: #Se só restou um monte ao final do jogo
+        print('\nParabéns, você ganhou! :)\n')
     else:
-        print('')
-        print('Não foi dessa vez! :(')
-        print('')
+        print('\nNão foi dessa vez! :(\n')
     enter = input('Quer jogar novamente? (digite s ou n): ')
 print('Obrigado por jogar')
