@@ -43,17 +43,19 @@ def possui_movimentos_possiveis(baralho):# Retorna se existem movimentos possív
         return True
     else:
         return False
-def printar_baralho(baralho): #printa baralho com numero antes daas cartas *FALTA CORES*
+def colorir_carta(c): # colorir a carta
+    if c[-1] == '♠':
+        return('\033[0;34m{}\033[m'.format(c))
+    elif c[-1] == '♥':
+        return('\033[0;31m{}\033[m'.format(c))
+    elif c[-1] == '♦':
+        return('\033[0;35m{}\033[m'.format(c))
+    elif c[-1] == '♣':
+        return('\033[0;37m{}\033[m'.format(c))
+def printar_baralho(baralho): #printa baralho com numero antes daas cartas
     j = 0
     while j < len(baralho):
-        if baralho[j][-1] == '♠':
-            print(j + 1, '\033[0;34m{}\033[m'.format(baralho[j]))
-        elif baralho[j][-1] == '♥':
-            print(j + 1, '\033[0;31m{}\033[m'.format(baralho[j]))
-        elif baralho[j][-1] == '♦':
-            print(j + 1,'\033[0;35m{}\033[m'.format(baralho[j]))
-        elif baralho[j][-1] == '♣':
-            print(j + 1, '\033[0;37m{}\033[m'.format(baralho[j]))
+        print(j + 1,'.', colorir_carta(baralho[j]))
         j += 1
     return ''
 
@@ -70,8 +72,8 @@ while enter == '' or enter == 's':
             print('Insira um valor válido')
         else:
             if lista_movimentos_possiveis(baralho, i) == [1, 3]:
-                print('1. {}'.format(baralho[i - 1]))
-                print('2. {}'.format(baralho[i - 3]))
+                print('1. {}'.format(colorir_carta(baralho[i - 1])))
+                print('2. {}'.format(colorir_carta(baralho[i - 3])))
                 escolha = int(input('Em qual das cartas você quer empilhar? '))
                 if escolha == 1:
                     baralho = empilha(baralho, i, i - 1)
@@ -85,19 +87,10 @@ while enter == '' or enter == 's':
                 baralho = empilha(baralho, i, i - 3)
                 printar_baralho(baralho)
             else:
-                if baralho[i][-1] == '♠':
-                    print('A carta', '\033[0;34m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
-                elif baralho[i][-1] == '♥':
-                    print('A carta', '\033[0;31m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
-                elif baralho[i][-1] == '♦':
-                    print('A carta', '\033[0;35m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível')
-                elif baralho[i][-1] == '♣':
-                    print('A carta', '\033[0;37m{}\033[m'.format(baralho[i]), 'não tem nenhuma jogada possível') 
+                print('A carta', colorir_carta(baralho[i]), 'não tem nenhuma jogada possível')
     if len(baralho) == 1:
-        print('Parabéns, você ganhou! :)')
+        print('\nParabéns, você ganhou! :)\n')
     else:
-        print('')
-        print('Não foi dessa vez! :(')
-        print('')
-    enter = input('Quer jogar novamente? (digite s ou n): ')
-print('Obrigado por jogar')
+        print('\nNão foi dessa vez! :(\n')
+    enter = input('\nQuer jogar novamente? (digite s ou n): ')
+print('\nObrigado por jogar\n')
