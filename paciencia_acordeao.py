@@ -55,11 +55,10 @@ def colorir_carta(c): # colorir a carta
 def printar_baralho(baralho): #printa baralho com numero antes daas cartas
     j = 0
     while j < len(baralho):
-        print(j + 1,'.', colorir_carta(baralho[j]))
+        print('{}.{}'.format(j + 1, colorir_carta(baralho[j])))
         j += 1
     return ''
 
-# PENSAR NA IMPLEMENTAÇÃO DE DICA
 # ADICIONAR COMENTÁRIOS DE EXPLICAÇÃO
 
 enter = input('Pressione enter para iniciar o jogo: ')
@@ -67,29 +66,38 @@ while enter == '' or enter == 's':
     baralho = cria_baralho()
     printar_baralho(baralho)
     while possui_movimentos_possiveis(baralho) == True:
-        i = int(input('Escolha uma carta (Digite um número entre 1 e {}): '.format(len(baralho)))) - 1
-        if i > len(baralho):
-            print('Insira um valor válido')
-        else:
-            if lista_movimentos_possiveis(baralho, i) == [1, 3]:
-                print('1. {}'.format(colorir_carta(baralho[i - 1])))
-                print('2. {}'.format(colorir_carta(baralho[i - 3])))
-                escolha = int(input('Em qual das cartas você quer empilhar? '))
-                if escolha == 1:
-                    baralho = empilha(baralho, i, i - 1)
-                elif escolha == 2:
-                    baralho = empilha(baralho, i, i - 3)
-                printar_baralho(baralho)
-            elif lista_movimentos_possiveis(baralho, i) == [1]:
-                baralho = empilha(baralho, i, i - 1)
-                printar_baralho(baralho)
-            elif lista_movimentos_possiveis(baralho, i) == [3]:
-                baralho = empilha(baralho, i, i - 3)
-                printar_baralho(baralho)
+        i = input('Escolha uma carta (Digite um número entre 1 e {}) ou digite "dica" para ter ajuda: '.format(len(baralho)))
+        if i != 'dica':
+            i = int(i) -1
+            if i + 1 > len(baralho):
+                print('\033[0;31mERRO\033[m', 'Insira um valor válido')
             else:
-                print('A carta', colorir_carta(baralho[i]), 'não tem nenhuma jogada possível')
+                if lista_movimentos_possiveis(baralho, i) == [1, 3]:
+                    print('1. {}'.format(colorir_carta(baralho[i - 1])))
+                    print('2. {}'.format(colorir_carta(baralho[i - 3])))
+                    escolha = int(input('Em qual das cartas você quer empilhar? '))
+                    if escolha == 1:
+                        baralho = empilha(baralho, i, i - 1)
+                    elif escolha == 2:
+                        baralho = empilha(baralho, i, i - 3)
+                    printar_baralho(baralho)
+                elif lista_movimentos_possiveis(baralho, i) == [1]:
+                    baralho = empilha(baralho, i, i - 1)
+                    printar_baralho(baralho)
+                elif lista_movimentos_possiveis(baralho, i) == [3]:
+                    baralho = empilha(baralho, i, i - 3)
+                    printar_baralho(baralho)
+                else:
+                    print('A carta', colorir_carta(baralho[i]), 'não tem nenhuma jogada possível')
+        else:
+            dica = []
+            for i in baralho:
+                if lista_movimentos_possiveis(baralho, baralho.index(i)) != []:
+                    dica.append(i)
+            random.shuffle(dica)
+            print('{}.{}'.format(baralho.index(dica[0]) + 1, colorir_carta(dica[0])))
     if len(baralho) == 1:
-        print('\nParabéns, você ganhou! :)\n')
+        print('\n\033[0;32mParabéns, você ganhou! :)\033[m\n')
     else:
         print('\nNão foi dessa vez! :(\n')
     enter = input('\nQuer jogar novamente? (digite s ou n): ')
